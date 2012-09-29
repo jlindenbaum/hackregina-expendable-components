@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
@@ -46,6 +47,8 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 
 	private Integer objectId;
 	private String latLngStr = "";
+	private String lat = "";
+	private String lon = "";
 	private String address = "";
 	private ProgressDialog progress;
 	protected ArrayList<Listing> merchants = new ArrayList<Listing>();
@@ -112,8 +115,9 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 
 		// start yellow api requests
 		String what = "restaurants";
-		String where = this.address + ", regina, sk";
-		new YellowTask(what, "boston").execute();
+		String where = String.format("cZ{%s},{%s}", this.lon, this.lat);
+		Logger.log(TAG, Uri.encode(where));
+		new YellowTask(what, Uri.encode(where)).execute();
 		
 		this.hideLoadingSpinner();
 		AlertDialog alert = new AlertDialog.Builder(this).create();
@@ -146,6 +150,8 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		this.objectId = goal.getObjectId();
 		this.latLngStr = goal.getLat() + "," + goal.getLong();
 		this.address = goal.getAddress();
+		this.lat = goal.getLat();
+		this.lon = goal.getLong();
 		// goal name
 		TextView goalName = (TextView) findViewById(R.id.goal_goalName);
 		goalName.setText(goal.getTitle());
