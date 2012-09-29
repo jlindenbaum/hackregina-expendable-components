@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10sp"
             android:gravity="center"
-            android:text="TODAY&apos;S GOAL"
+            android:text="CHECKOUT"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -78,7 +78,22 @@
             android:layout_marginBottom="20sp"
             android:layout_marginTop="20sp"
             android:onClick="completeYelpIntent"
-            android:text="Yelp" />
+            android:text="Checkout Yelp" />
+        
+		<TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:gravity="center"
+            android:text="YellowPages"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@+id/goal_yellowList"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
     </LinearLayout>
 
 </LinearLayout>

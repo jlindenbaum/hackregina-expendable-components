@@ -29,6 +29,9 @@ public class CurrentGoal {
 	public String getLong() {
 		return Long;
 	}
+	public String getAddress() {
+		return Address;
+	}
 	
 	public String toString() {
 		return ObjectId + " " + Date + " " + Title + " " + Address + " " + Lat + " " + " " + Long + " " + CurrentPointsAward;

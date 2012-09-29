@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -11,6 +12,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -22,26 +25,30 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.hackregina.models.Checkin;
 import com.android.hackregina.models.CurrentGoal;
+import com.android.hackregina.models.Listing;
 import com.android.hackregina.utils.Logger;
 import com.google.gson.Gson;
 
 public class GoalActivity extends Activity implements NetworkImageTaskInterface {
 
 	public static final String TAG = "### GoalActivity";
-	
+
 	private Integer objectId;
 	private String latLngStr = "";
 	private String address = "";
 	private ProgressDialog progress;
+	protected ArrayList<Listing> merchants = new ArrayList<Listing>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +65,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
-	
+
 	private void showLoadingSpinner() {
 		this.progress = new ProgressDialog(this);
 		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -66,7 +73,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		progress.setMessage("Loading...");
 		progress.show();
 	}
-	
+
 	private void hideLoadingSpinner() {
 		this.progress.hide();
 	}
@@ -76,7 +83,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		renderCurrentGoal(goal);
 		this.hideLoadingSpinner();
 	}
-	
+
 	public void completeYelpIntent(View v) {
 		String yelpURI = "http://www.yelp.com/search?find_desc=restaurant&find_loc=" + this.address + "regina";
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(yelpURI));
@@ -88,27 +95,39 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		this.showLoadingSpinner();
 		new CheckinTask().execute(new String[] { checkinJSON });
 	}
-	
+
 	private void finishedCheckin(Checkin checkin) {
-		this.hideLoadingSpinner();
-		AlertDialog alert = new AlertDialog.Builder(this).create();
-		alert.setTitle("Dora The Explorer!");
-		alert.setMessage("You've checked in. That's awesome. Checkout what's around!");
-		alert.show();
-		
+
 		// set points
 		Button goalButton = (Button) findViewById(R.id.goal_checkinButton);
 		goalButton.setText("ACCOMPLISHED!");
 		goalButton.setOnClickListener(null);
 		goalButton.setActivated(false);
-		
+
 		// show checkout
 		LinearLayout checkout = (LinearLayout) findViewById(R.id.goal_checkoutLayout);
 		checkout.setVisibility(View.VISIBLE);
 		LinearLayout mapLayout = (LinearLayout) findViewById(R.id.goal_mapLayout);
 		mapLayout.setVisibility(View.GONE);
+
+		// start yellow api requests
+		String what = "restaurants";
+		String where = this.address + ", regina, sk";
+		new YellowTask(what, "boston").execute();
+		
+		this.hideLoadingSpinner();
+		AlertDialog alert = new AlertDialog.Builder(this).create();
+		alert.setTitle("Dora The Explorer!");
+		alert.setMessage("You've checked in. That's awesome. Checkout what's around!");
+		alert.show();
 	}
-	
+
+	private void finishYellowTask() {
+		YellowListingAdapter adapter = new YellowListingAdapter(getApplicationContext(), R.layout.listing_item, merchants);
+		ListView listView = (ListView) findViewById(R.id.goal_yellowList);
+		listView.setAdapter(adapter);
+	}
+
 	private String getGoogleAccount() {
 		AccountManager manager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
 		Account[] list = manager.getAccounts();
@@ -122,10 +141,11 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 
 		return gmail;
 	}
-	
+
 	private void renderCurrentGoal(CurrentGoal goal) {
 		this.objectId = goal.getObjectId();
 		this.latLngStr = goal.getLat() + "," + goal.getLong();
+		this.address = goal.getAddress();
 		// goal name
 		TextView goalName = (TextView) findViewById(R.id.goal_goalName);
 		goalName.setText(goal.getTitle());
@@ -146,7 +166,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		mapImage.setImageBitmap(bm);
 		mapImage.setClickable(true);
 		mapImage.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				String query = "http://maps.google.com/maps?q=" + latLngStr;
@@ -155,12 +175,12 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 			}
 		});
 	}
-	
+
 	class CheckinTask extends AsyncTask<String, Void, Checkin> {
 
 		@Override
 		protected Checkin doInBackground(String... jsons) {
-			
+
 			for (String json : jsons) {
 				DefaultHttpClient client = new DefaultHttpClient();
 				HttpPost httpPost = new HttpPost(Settings.URL_CHECKIN);
@@ -169,11 +189,11 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 				Logger.log(TAG, json);
 				try {
 					httpPost.setEntity(new StringEntity(json));
-					
+
 					HttpResponse response = client.execute(httpPost);
 					InputStream ips = response.getEntity().getContent();
 					BufferedReader buf = new BufferedReader(new InputStreamReader(ips, "UTF-8"));
-					
+
 					StringBuilder sb = new StringBuilder();
 					String s;
 					while (true) {
@@ -185,9 +205,9 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 					}
 					buf.close();
 					ips.close();
-					
+
 					Logger.log(TAG, "Result: " + sb.toString());
-					
+
 					Gson gson = new Gson();
 					Checkin checkin = gson.fromJson(sb.toString(), Checkin.class);
 					return checkin;
@@ -196,17 +216,55 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 					e.printStackTrace();
 				}
 			}
-			
+
 			return null;
 		}
-		
+
 		@Override
 		public void onPostExecute(Checkin checkin) {
 			Logger.log(TAG, "Finished checkin");
 			Logger.log(TAG, "checkin: " + checkin.toString());
 			finishedCheckin(checkin);
 		}
+
+	}
+
+	class YellowTask extends AsyncTask<Void, Void, Void> {
 		
+		private String what;
+		private String where;
+		
+		public YellowTask(String what, String where) {
+			this.what = what;
+			this.where = where;
+		}
+		
+		@Override
+		protected Void doInBackground(Void... voids) {
+			try {
+				YellowAPI api = new YellowAPIImpl("en", Settings.YellowAPIKey, "discovr", true);
+				JSONObject response = api.findBusiness(this.what, this.where, 1, 40, 0);
+				Logger.log(TAG, response.toString());
+				// Make sure the response contains results
+				if (response.isNull("listings") == false) {
+					JSONArray listings = response.getJSONArray("listings");
+
+					for (int i = 0; i < listings.length(); ++i) {
+						merchants.add(new Listing(listings.getJSONObject(i)));
+						Logger.log(TAG, merchants.get(i).toString());
+					}
+				}
+			} catch (Exception e) {
+				Log.e("MerchantFeedError", "Error loading JSON", e);
+			}
+
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void nothing) {
+			finishYellowTask();
+		}
 	}
 
 	class GoalActivityTask extends AsyncTask<String, Void, CurrentGoal> {

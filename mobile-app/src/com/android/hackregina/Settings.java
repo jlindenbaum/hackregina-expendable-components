@@ -9,4 +9,6 @@ public class Settings {
 	
 	// gmaps static api key: AIzaSyAUZjvOAGb8CU2ljzONGaC8wqbShNwHNRM
 	public static final String URL_GMAPS_STATIC = "http://maps.googleapis.com/maps/api/staticmap?sensor=false&center=%s,%s&zoom=15&markers=color:red|%s,%s&size=500x300&key=AIzaSyAUZjvOAGb8CU2ljzONGaC8wqbShNwHNRM";
+	
+	public static final String YellowAPIKey = "mzpcne2fjv8qszj5v627ra9b";
 }
