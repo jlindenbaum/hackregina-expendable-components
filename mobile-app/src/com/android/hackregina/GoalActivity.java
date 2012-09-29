@@ -17,7 +17,9 @@ import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -36,6 +38,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 	public static final String TAG = "### GoalActivity";
 	
 	private Integer objectId;
+	private String latLngStr = "";
 	private ProgressDialog progress;
 
 	@Override
@@ -108,6 +111,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 	
 	private void renderCurrentGoal(CurrentGoal goal) {
 		this.objectId = goal.getObjectId();
+		this.latLngStr = goal.getLat() + "," + goal.getLong();
 		// goal name
 		TextView goalName = (TextView) findViewById(R.id.goal_goalName);
 		goalName.setText(goal.getTitle());
@@ -126,6 +130,16 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		Logger.log(TAG, "Finished loading bitmap");
 		ImageView mapImage = (ImageView) findViewById(R.id.goal_mapImage);
 		mapImage.setImageBitmap(bm);
+		mapImage.setClickable(true);
+		mapImage.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String query = "http://maps.google.com/maps?q=" + latLngStr;
+				Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(query));
+				startActivity(mapIntent);
+			}
+		});
 	}
 	
 	class CheckinTask extends AsyncTask<String, Void, Checkin> {
