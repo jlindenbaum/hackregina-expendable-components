@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
@@ -29,6 +28,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -130,6 +130,16 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		YellowListingAdapter adapter = new YellowListingAdapter(getApplicationContext(), R.layout.listing_item, merchants);
 		ListView listView = (ListView) findViewById(R.id.goal_yellowList);
 		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				TextView address = (TextView) arg1.findViewById(R.id.businessAddress);
+				String mapUri = "http://maps.google.com/maps?q=" + address.getText();
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapUri));
+				startActivity(intent);
+			}
+		});
 	}
 
 	private String getGoogleAccount() {
