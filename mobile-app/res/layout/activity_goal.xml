@@ -1,11 +1,41 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:text="TEST" />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="TODAY&apos;S GOAL"
+        android:textSize="20sp" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/goal_goalName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="VARSITY PARK - OUTDOOR TENNIS"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/goal_checkinButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="CHECKIN NOW @ 50 POINTS" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="MAP"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/goal_mapImage"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+</LinearLayout>

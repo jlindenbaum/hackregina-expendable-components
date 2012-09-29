@@ -15,6 +15,21 @@ public class CurrentGoal {
 		return ObjectId;
 	}
 	
+	public String getTitle() {
+		return Title;
+	}
+	
+	public String getCurrentPointsAward() {
+		return CurrentPointsAward;
+	}
+	
+	public String getLat() {
+		return Lat;
+	}
+	public String getLong() {
+		return Long;
+	}
+	
 	public String toString() {
 		return ObjectId + " " + Date + " " + Title + " " + Address + " " + Lat + " " + " " + Long + " " + CurrentPointsAward;
 	}

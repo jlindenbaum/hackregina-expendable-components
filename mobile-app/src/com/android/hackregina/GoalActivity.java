@@ -1,9 +1,12 @@
 package com.android.hackregina;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -11,15 +14,21 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.hackregina.models.CurrentGoal;
 import com.android.hackregina.utils.Logger;
 import com.google.gson.Gson;
 
-public class GoalActivity extends Activity {
+public class GoalActivity extends Activity implements NetworkImageTaskInterface {
 
 	public static final String TAG = "### GoalActivity";
 
@@ -42,9 +51,25 @@ public class GoalActivity extends Activity {
 		Logger.log(TAG, "DONE");
 		renderCurrentGoal(goal);
 	}
-	
+
 	private void renderCurrentGoal(CurrentGoal goal) {
-		
+		// goal name
+		TextView goalName = (TextView) findViewById(R.id.goal_goalName);
+		goalName.setText(goal.getTitle());
+
+		// set points
+		Button goalButton = (Button) findViewById(R.id.goal_checkinButton);
+		goalButton.setText("CHECK IN FOR " + goal.getCurrentPointsAward() + " POINTS");
+
+		// map image
+		String imageUri = String.format(Settings.URL_GMAPS_STATIC, goal.getLat(), goal.getLong(), goal.getLat(), goal.getLong());
+		new NetworkImageTask().setActivity(this).execute(new String[] { imageUri });
+	}
+
+	@Override
+	public void loadBitmapComplete(Bitmap bm) {
+		ImageView mapImage = (ImageView) findViewById(R.id.goal_mapImage);
+		mapImage.setImageBitmap(bm);
 	}
 
 	class GoalActivityTask extends AsyncTask<String, Void, CurrentGoal> {
@@ -74,7 +99,7 @@ public class GoalActivity extends Activity {
 					}
 					buf.close();
 					ips.close();
-					
+
 					// parse json
 					Gson gson = new Gson();
 					CurrentGoal[] goals = gson.fromJson(sb.toString(), CurrentGoal[].class);
