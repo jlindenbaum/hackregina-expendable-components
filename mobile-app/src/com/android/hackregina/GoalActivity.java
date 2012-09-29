@@ -1,29 +1,31 @@
 package com.android.hackregina;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.hackregina.models.Checkin;
 import com.android.hackregina.models.CurrentGoal;
 import com.android.hackregina.utils.Logger;
 import com.google.gson.Gson;
@@ -31,6 +33,8 @@ import com.google.gson.Gson;
 public class GoalActivity extends Activity implements NetworkImageTaskInterface {
 
 	public static final String TAG = "### GoalActivity";
+	
+	private Integer objectId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,40 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		renderCurrentGoal(goal);
 	}
 
+	public void completeCheckin(View v) {
+		String checkinJSON = "{\"ObjectId\":" + this.objectId + ", \"UserId\":\"" + this.getGoogleAccount() + "\"}";
+		new CheckinTask().execute(new String[] { checkinJSON });
+	}
+	
+	private void finishedCheckin(Checkin checkin) {
+		AlertDialog alert = new AlertDialog.Builder(this).create();
+		alert.setTitle("Dora The Explorer!");
+		alert.setMessage("You've checked in. That's awesome. More goals tomorrow!");
+		alert.show();
+		
+		// set points
+		Button goalButton = (Button) findViewById(R.id.goal_checkinButton);
+		goalButton.setText("ACCOMPLISHED!");
+		goalButton.setOnClickListener(null);
+		goalButton.setActivated(false);
+	}
+	
+	private String getGoogleAccount() {
+		AccountManager manager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
+		Account[] list = manager.getAccounts();
+		String gmail = null;
+
+		for (Account account : list) {
+			if (account.type.equalsIgnoreCase("com.google")) {
+				return account.name;
+			}
+		}
+
+		return gmail;
+	}
+	
 	private void renderCurrentGoal(CurrentGoal goal) {
+		this.objectId = goal.getObjectId();
 		// goal name
 		TextView goalName = (TextView) findViewById(R.id.goal_goalName);
 		goalName.setText(goal.getTitle());
@@ -68,8 +105,62 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 
 	@Override
 	public void loadBitmapComplete(Bitmap bm) {
+		Logger.log(TAG, "Finished loading bitmap");
 		ImageView mapImage = (ImageView) findViewById(R.id.goal_mapImage);
 		mapImage.setImageBitmap(bm);
+	}
+	
+	class CheckinTask extends AsyncTask<String, Void, Checkin> {
+
+		@Override
+		protected Checkin doInBackground(String... jsons) {
+			
+			for (String json : jsons) {
+				DefaultHttpClient client = new DefaultHttpClient();
+				HttpPost httpPost = new HttpPost(Settings.URL_CHECKIN);
+				httpPost.setHeader("X-ZUMO-APPLICATION", Settings.X_ZUMO_KEY);
+				httpPost.setHeader("Content-Type", "application/json");
+				Logger.log(TAG, json);
+				try {
+					httpPost.setEntity(new StringEntity(json));
+					
+					HttpResponse response = client.execute(httpPost);
+					InputStream ips = response.getEntity().getContent();
+					BufferedReader buf = new BufferedReader(new InputStreamReader(ips, "UTF-8"));
+					
+					StringBuilder sb = new StringBuilder();
+					String s;
+					while (true) {
+						s = buf.readLine();
+						if (s == null || s.length() == 0) {
+							break;
+						}
+						sb.append(s);
+					}
+					buf.close();
+					ips.close();
+					
+					Logger.log(TAG, "Result: " + sb.toString());
+					
+					Gson gson = new Gson();
+					Checkin checkin = gson.fromJson(sb.toString(), Checkin.class);
+					return checkin;
+				} catch (Exception e) {
+					// nothing
+					e.printStackTrace();
+				}
+			}
+			
+			return null;
+		}
+		
+		@Override
+		public void onPostExecute(Checkin checkin) {
+			Logger.log(TAG, "Finished checkin");
+			Logger.log(TAG, "checkin: " + checkin.toString());
+			finishedCheckin(checkin);
+		}
+		
 	}
 
 	class GoalActivityTask extends AsyncTask<String, Void, CurrentGoal> {

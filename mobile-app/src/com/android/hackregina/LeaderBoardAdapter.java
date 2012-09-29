@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.android.hackregina.models.LeaderPerson;
+import com.android.hackregina.utils.Logger;
 
 public class LeaderBoardAdapter extends ArrayAdapter<LeaderPerson> {
 
@@ -19,6 +20,7 @@ public class LeaderBoardAdapter extends ArrayAdapter<LeaderPerson> {
 
 	public LeaderBoardAdapter(Context context, int textViewResourceId, ArrayList<LeaderPerson> objects) {
 		super(context, textViewResourceId, objects);
+		Logger.log(TAG, "Creating adapter");
 		this.people = objects;
 		this.context = context;
 	}
@@ -50,11 +52,11 @@ public class LeaderBoardAdapter extends ArrayAdapter<LeaderPerson> {
 		// name
 		TextView name = (TextView) convertView.findViewById(R.id.leaderboardItem_name);
 		name.setText(currentPerson.getUserName());
-		
+
 		// points
 		TextView points = (TextView) convertView.findViewById(R.id.leaderboardItem_points);
 		points.setText("Points " + currentPerson.getPoints().toString());
-		
+
 		// total checkins
 		TextView checkins = (TextView) convertView.findViewById(R.id.leaderboardItem_checkins);
 		checkins.setText("Total checkins " + currentPerson.getTotalCheckins().toString());

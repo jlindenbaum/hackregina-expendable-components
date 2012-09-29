@@ -36,18 +36,4 @@ public class MainActivity extends TabActivity {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
-
-	// protected String getGoogleAccount() {
-	// AccountManager manager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
-	// Account[] list = manager.getAccounts();
-	// String gmail = null;
-	//
-	// for (Account account : list) {
-	// if (account.type.equalsIgnoreCase("com.google")) {
-	// return account.name;
-	// }
-	// }
-	//
-	// return gmail;
-	// }
 }

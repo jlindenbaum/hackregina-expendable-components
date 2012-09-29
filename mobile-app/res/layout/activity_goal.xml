@@ -23,6 +23,7 @@
         android:id="@+id/goal_checkinButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:onClick="completeCheckin"
         android:text="CHECKIN NOW @ 50 POINTS" />
 
     <TextView
