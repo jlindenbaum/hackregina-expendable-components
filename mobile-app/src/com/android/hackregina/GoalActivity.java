@@ -26,6 +26,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.hackregina.models.Checkin;
@@ -39,6 +40,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 	
 	private Integer objectId;
 	private String latLngStr = "";
+	private String address = "";
 	private ProgressDialog progress;
 
 	@Override
@@ -74,6 +76,12 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		renderCurrentGoal(goal);
 		this.hideLoadingSpinner();
 	}
+	
+	public void completeYelpIntent(View v) {
+		String yelpURI = "http://www.yelp.com/search?find_desc=restaurant&find_loc=" + this.address + "regina";
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(yelpURI));
+		startActivity(intent);
+	}
 
 	public void completeCheckin(View v) {
 		String checkinJSON = "{\"ObjectId\":" + this.objectId + ", \"UserId\":\"" + this.getGoogleAccount() + "\"}";
@@ -85,7 +93,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		this.hideLoadingSpinner();
 		AlertDialog alert = new AlertDialog.Builder(this).create();
 		alert.setTitle("Dora The Explorer!");
-		alert.setMessage("You've checked in. That's awesome. More goals tomorrow!");
+		alert.setMessage("You've checked in. That's awesome. Checkout what's around!");
 		alert.show();
 		
 		// set points
@@ -93,6 +101,12 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		goalButton.setText("ACCOMPLISHED!");
 		goalButton.setOnClickListener(null);
 		goalButton.setActivated(false);
+		
+		// show checkout
+		LinearLayout checkout = (LinearLayout) findViewById(R.id.goal_checkoutLayout);
+		checkout.setVisibility(View.VISIBLE);
+		LinearLayout mapLayout = (LinearLayout) findViewById(R.id.goal_mapLayout);
+		mapLayout.setVisibility(View.GONE);
 	}
 	
 	private String getGoogleAccount() {
