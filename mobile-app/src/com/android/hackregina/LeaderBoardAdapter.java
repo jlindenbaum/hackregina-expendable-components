@@ -51,7 +51,8 @@ public class LeaderBoardAdapter extends ArrayAdapter<LeaderPerson> {
 
 		// name
 		TextView name = (TextView) convertView.findViewById(R.id.leaderboardItem_name);
-		name.setText(currentPerson.getUserName());
+		String stringName = (currentPerson.getUserName() == null) ? currentPerson.getUserId() : currentPerson.getUserName();
+		name.setText(stringName);
 
 		// points
 		TextView points = (TextView) convertView.findViewById(R.id.leaderboardItem_points);

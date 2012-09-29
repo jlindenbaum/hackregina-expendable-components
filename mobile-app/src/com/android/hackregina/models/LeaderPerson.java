@@ -12,6 +12,10 @@ public class LeaderPerson {
 		return UserName;
 	}
 	
+	public String getUserId() {
+		return UserId;
+	}
+	
 	public Integer getPoints() {
 		return Points;
 	}
