@@ -12,9 +12,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.android.hackregina.models.LeaderPerson;
@@ -22,39 +24,68 @@ import com.android.hackregina.utils.Logger;
 import com.google.gson.Gson;
 
 public class LeaderBoardActivity extends Activity {
-	
+
 	public static final String TAG = "### LeaderBoardActivity";
-	
+	private ProgressDialog progress;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_leaderboard);
 		
-		new LeaderBoardTask().execute(Settings.URL_LEADERBOARD);
+		refreshContent();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_main, menu);
+		getMenuInflater().inflate(R.menu.activity_leaderboard, menu);
 		return true;
 	}
 	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_refresh:
+			refreshContent();
+			return true;
+		}
+		return false;
+	}
+	
+	private void refreshContent() {
+		showLoadingSpinner();
+		new LeaderBoardTask().execute(Settings.URL_LEADERBOARD);
+	}
+
+	private void showLoadingSpinner() {
+		this.progress = new ProgressDialog(this);
+		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progress.setCancelable(false);
+		progress.setMessage("Loading...");
+		progress.show();
+	}
+
+	private void hideLoadingSpinner() {
+		this.progress.hide();
+	}
+
 	public void refreshComplete(LeaderPerson[] people) {
 		Logger.log(TAG, "DONE");
 		ArrayList<LeaderPerson> arrayPeople = new ArrayList<LeaderPerson>();
 		for (int i = 0; i < people.length; i++) {
 			arrayPeople.add(people[i]);
 		}
-		
+
 		LeaderBoardAdapter adapter = new LeaderBoardAdapter(this, R.id.leaderboardItem_name, arrayPeople);
 		ListView listView = (ListView) findViewById(R.id.leaderboard_listView);
 		listView.setAdapter(adapter);
+		hideLoadingSpinner();
 	}
-	
+
 	class LeaderBoardTask extends AsyncTask<String, Void, LeaderPerson[]> {
 
 		public static final String TAG = "### LeaderBoardTask";
-		
+
 		@Override
 		protected LeaderPerson[] doInBackground(String... urls) {
 

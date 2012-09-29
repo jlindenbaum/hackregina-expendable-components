@@ -16,6 +16,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 	public static final String TAG = "### GoalActivity";
 	
 	private Integer objectId;
+	private ProgressDialog progress;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		setContentView(R.layout.activity_goal);
 
 		Logger.log(TAG, "Starting...");
+		showLoadingSpinner();
 		new GoalActivityTask().execute(new String[] { Settings.URL_CURRENT_GOAL });
 	}
 
@@ -50,18 +53,33 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
+	
+	private void showLoadingSpinner() {
+		this.progress = new ProgressDialog(this);
+		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progress.setCancelable(false);
+		progress.setMessage("Loading...");
+		progress.show();
+	}
+	
+	private void hideLoadingSpinner() {
+		this.progress.hide();
+	}
 
 	public void refreshComplete(CurrentGoal goal) {
 		Logger.log(TAG, "DONE");
 		renderCurrentGoal(goal);
+		this.hideLoadingSpinner();
 	}
 
 	public void completeCheckin(View v) {
 		String checkinJSON = "{\"ObjectId\":" + this.objectId + ", \"UserId\":\"" + this.getGoogleAccount() + "\"}";
+		this.showLoadingSpinner();
 		new CheckinTask().execute(new String[] { checkinJSON });
 	}
 	
 	private void finishedCheckin(Checkin checkin) {
+		this.hideLoadingSpinner();
 		AlertDialog alert = new AlertDialog.Builder(this).create();
 		alert.setTitle("Dora The Explorer!");
 		alert.setMessage("You've checked in. That's awesome. More goals tomorrow!");
