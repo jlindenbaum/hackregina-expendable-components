@@ -76,7 +76,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface,
 	}
 
 	public void completeYelpIntent(View v) {
-		String yelpURI = "http://www.yelp.com/search?find_desc=restaurant&find_loc=" + this.address + "regina";
+		String yelpURI = "http://www.yelp.com/search?find_desc=restaurant&find_loc=" + this.address + ", regina";
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(yelpURI));
 		startActivity(intent);
 	}
