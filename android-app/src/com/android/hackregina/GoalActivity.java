@@ -1,17 +1,5 @@
 package com.android.hackregina;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -28,20 +16,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.hackregina.interfaces.CheckinTaskCallback;
+import com.android.hackregina.interfaces.GetGoalTaskCallback;
 import com.android.hackregina.models.Checkin;
 import com.android.hackregina.models.CurrentGoal;
-import com.android.hackregina.models.Listing;
+import com.android.hackregina.tasks.CheckinTask;
+import com.android.hackregina.tasks.GetGoalTask;
 import com.android.hackregina.utils.Logger;
-import com.google.gson.Gson;
 
-public class GoalActivity extends Activity implements NetworkImageTaskInterface {
+public class GoalActivity extends Activity implements NetworkImageTaskInterface, GetGoalTaskCallback, CheckinTaskCallback {
 
 	public static final String TAG = "### GoalActivity";
 
@@ -51,7 +39,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 	private String lon = "";
 	private String address = "";
 	private ProgressDialog progress;
-	protected ArrayList<Listing> merchants = new ArrayList<Listing>();
+//	protected GetGoalTask data = new GetGoalTask(new ArrayList<Listing>());
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +48,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 
 		Logger.log(TAG, "Starting...");
 		showLoadingSpinner();
-		new GoalActivityTask().execute(new String[] { Settings.URL_CURRENT_GOAL });
+		new GetGoalTask(this).execute(new String[] { Settings.URL_CURRENT_GOAL });
 	}
 
 	@Override
@@ -81,7 +69,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		this.progress.hide();
 	}
 
-	public void refreshComplete(CurrentGoal goal) {
+	public void refreshCurrentGoalComplete(CurrentGoal goal) {
 		Logger.log(TAG, "DONE");
 		renderCurrentGoal(goal);
 		this.hideLoadingSpinner();
@@ -96,11 +84,10 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 	public void completeCheckin(View v) {
 		String checkinJSON = "{\"ObjectId\":" + this.objectId + ", \"UserId\":\"" + this.getGoogleAccount() + "\"}";
 		this.showLoadingSpinner();
-		new CheckinTask().execute(new String[] { checkinJSON });
+		new CheckinTask(this).execute(new String[] { checkinJSON });
 	}
 
 	private void finishedCheckin(Checkin checkin) {
-
 		// set points
 		Button goalButton = (Button) findViewById(R.id.goal_checkinButton);
 		goalButton.setText("ACCOMPLISHED!");
@@ -127,19 +114,19 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 	}
 
 	private void finishYellowTask() {
-		YellowListingAdapter adapter = new YellowListingAdapter(getApplicationContext(), R.layout.listing_item, merchants);
-		ListView listView = (ListView) findViewById(R.id.goal_yellowList);
-		listView.setAdapter(adapter);
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				TextView address = (TextView) arg1.findViewById(R.id.businessAddress);
-				String mapUri = "http://maps.google.com/maps?q=" + address.getText();
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapUri));
-				startActivity(intent);
-			}
-		});
+//		YellowListingAdapter adapter = new YellowListingAdapter(getApplicationContext(), R.layout.listing_item, data.merchants);
+//		ListView listView = (ListView) findViewById(R.id.goal_yellowList);
+//		listView.setAdapter(adapter);
+//		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+//				TextView address = (TextView) arg1.findViewById(R.id.businessAddress);
+//				String mapUri = "http://maps.google.com/maps?q=" + address.getText();
+//				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapUri));
+//				startActivity(intent);
+//			}
+//		});
 	}
 
 	private String getGoogleAccount() {
@@ -192,58 +179,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		});
 	}
 
-	class CheckinTask extends AsyncTask<String, Void, Checkin> {
 
-		@Override
-		protected Checkin doInBackground(String... jsons) {
-
-			for (String json : jsons) {
-				DefaultHttpClient client = new DefaultHttpClient();
-				HttpPost httpPost = new HttpPost(Settings.URL_CHECKIN);
-				httpPost.setHeader("X-ZUMO-APPLICATION", Settings.X_ZUMO_KEY);
-				httpPost.setHeader("Content-Type", "application/json");
-				Logger.log(TAG, json);
-				try {
-					httpPost.setEntity(new StringEntity(json));
-
-					HttpResponse response = client.execute(httpPost);
-					InputStream ips = response.getEntity().getContent();
-					BufferedReader buf = new BufferedReader(new InputStreamReader(ips, "UTF-8"));
-
-					StringBuilder sb = new StringBuilder();
-					String s;
-					while (true) {
-						s = buf.readLine();
-						if (s == null || s.length() == 0) {
-							break;
-						}
-						sb.append(s);
-					}
-					buf.close();
-					ips.close();
-
-					Logger.log(TAG, "Result: " + sb.toString());
-
-					Gson gson = new Gson();
-					Checkin checkin = gson.fromJson(sb.toString(), Checkin.class);
-					return checkin;
-				} catch (Exception e) {
-					// nothing
-					e.printStackTrace();
-				}
-			}
-
-			return null;
-		}
-
-		@Override
-		public void onPostExecute(Checkin checkin) {
-			Logger.log(TAG, "Finished checkin");
-			Logger.log(TAG, "checkin: " + checkin.toString());
-			finishedCheckin(checkin);
-		}
-
-	}
 
 	class YellowTask extends AsyncTask<Void, Void, Void> {
 		
@@ -265,10 +201,10 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 				if (response.isNull("listings") == false) {
 					JSONArray listings = response.getJSONArray("listings");
 
-					for (int i = 0; i < listings.length(); ++i) {
-						merchants.add(new Listing(listings.getJSONObject(i)));
-						Logger.log(TAG, merchants.get(i).toString());
-					}
+//					for (int i = 0; i < listings.length(); ++i) {
+//						data.merchants.add(new Listing(listings.getJSONObject(i)));
+//						Logger.log(TAG, data.merchants.get(i).toString());
+//					}
 				}
 			} catch (Exception e) {
 				Log.e("MerchantFeedError", "Error loading JSON", e);
@@ -283,55 +219,15 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface 
 		}
 	}
 
-	class GoalActivityTask extends AsyncTask<String, Void, CurrentGoal> {
-
-		@Override
-		protected CurrentGoal doInBackground(String... urls) {
-
-			for (String url : urls) {
-				DefaultHttpClient client = new DefaultHttpClient();
-				HttpGet httpGet = new HttpGet(url);
-				httpGet.setHeader("X-ZUMO-APPLICATION", Settings.X_ZUMO_KEY);
-
-				try {
-					// read response into string
-					HttpResponse response = client.execute(httpGet);
-					InputStream ips = response.getEntity().getContent();
-					BufferedReader buf = new BufferedReader(new InputStreamReader(ips, "UTF-8"));
-
-					StringBuilder sb = new StringBuilder();
-					String s;
-					while (true) {
-						s = buf.readLine();
-						if (s == null || s.length() == 0)
-							break;
-						sb.append(s);
-
-					}
-					buf.close();
-					ips.close();
-
-					// parse json
-					Gson gson = new Gson();
-					CurrentGoal[] goals = gson.fromJson(sb.toString(), CurrentGoal[].class);
-					Logger.log(TAG, goals[0].toString());
-					return goals[0];
-				} catch (ClientProtocolException e) {
-					Logger.log(TAG, e.getMessage());
-					e.printStackTrace();
-				} catch (IOException e) {
-					Logger.log(TAG, e.getMessage());
-					e.printStackTrace();
-				}
-			}
-
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(CurrentGoal goal) {
-			refreshComplete(goal);
-		}
-
+	@Override
+	public void goalUpdateTaskComplete(CurrentGoal goal) {
+		refreshCurrentGoalComplete(goal);
 	}
+
+	@Override
+	public void checkinTaskComplete(Checkin checkin) {
+		finishedCheckin(checkin);
+	}
+
+
 }
