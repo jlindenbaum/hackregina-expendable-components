@@ -57,11 +57,11 @@ public class LeaderBoardAdapter extends ArrayAdapter<LeaderPerson> {
 
 		// points
 		TextView points = (TextView) convertView.findViewById(R.id.leaderboardItem_points);
-		points.setText("Points " + currentPerson.getPoints().toString());
+		points.setText("Points " + currentPerson.getPoints());
 
 		// total checkins
 		TextView checkins = (TextView) convertView.findViewById(R.id.leaderboardItem_checkins);
-		checkins.setText("Total checkins " + currentPerson.getTotalCheckins().toString());
+		checkins.setText("Total checkins " + currentPerson.getTotalCheckins());
 
 		return convertView;
 	}
