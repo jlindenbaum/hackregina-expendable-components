@@ -1,4 +1,4 @@
-package com.android.hackregina;
+package com.android.hackregina.tasks;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -10,19 +10,16 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
-interface NetworkImageTaskInterface {
-	public void loadBitmapComplete(Bitmap bm);
-}
+import com.android.hackregina.interfaces.NetworkImageTaskCallback;
 
 public class NetworkImageTask extends AsyncTask<String, Void, Bitmap> {
 
 	public static final String TAG = "### NetworkImageTask";
 
-	private NetworkImageTaskInterface activity;
+	private NetworkImageTaskCallback callback;
 
-	public NetworkImageTask setActivity(NetworkImageTaskInterface niti) {
-		this.activity = niti;
-		return this;
+	public NetworkImageTask(NetworkImageTaskCallback callback) {
+		this.callback = callback;
 	}
 
 	@Override
@@ -49,7 +46,9 @@ public class NetworkImageTask extends AsyncTask<String, Void, Bitmap> {
 
 	@Override
 	protected void onPostExecute(Bitmap bm) {
-		this.activity.loadBitmapComplete(bm);
+		if (this.callback != null) {
+			this.callback.loadBitmapComplete(bm);
+		}
 	}
 
 }

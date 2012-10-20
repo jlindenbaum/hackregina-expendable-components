@@ -22,17 +22,19 @@ import android.widget.TextView;
 
 import com.android.hackregina.interfaces.CheckinTaskCallback;
 import com.android.hackregina.interfaces.GetGoalTaskCallback;
+import com.android.hackregina.interfaces.NetworkImageTaskCallback;
 import com.android.hackregina.interfaces.YellowTaskCallback;
 import com.android.hackregina.models.Checkin;
 import com.android.hackregina.models.CurrentGoal;
 import com.android.hackregina.tasks.CheckinTask;
 import com.android.hackregina.tasks.GetGoalTask;
+import com.android.hackregina.tasks.NetworkImageTask;
 import com.android.hackregina.tasks.YellowTask;
 import com.android.hackregina.utils.Logger;
 import com.android.hackregina.yellowbooks.Listing;
 import com.android.hackregina.yellowbooks.YellowListingAdapter;
 
-public class GoalActivity extends Activity implements NetworkImageTaskInterface, GetGoalTaskCallback, CheckinTaskCallback, YellowTaskCallback {
+public class GoalActivity extends Activity implements NetworkImageTaskCallback, GetGoalTaskCallback, CheckinTaskCallback, YellowTaskCallback {
 
 	public static final String TAG = "### GoalActivity";
 
@@ -161,7 +163,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface,
 
 		// map image
 		String imageUri = String.format(Settings.URL_GMAPS_STATIC, goal.getLat(), goal.getLong(), goal.getLat(), goal.getLong());
-		new NetworkImageTask().setActivity(this).execute(new String[] { imageUri });
+		new NetworkImageTask(this).execute(new String[] { imageUri });
 	}
 
 	@Override
