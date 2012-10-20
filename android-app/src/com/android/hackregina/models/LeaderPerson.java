@@ -23,4 +23,8 @@ public class LeaderPerson {
 	public Integer getTotalCheckins() {
 		return TotalCheckins;
 	}
+	
+	public String toString() {
+		return id + " " + UserId + " " + UserName + " " + TotalCheckins + " " + Points;
+	}
 }

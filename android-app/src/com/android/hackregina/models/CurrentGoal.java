@@ -34,6 +34,6 @@ public class CurrentGoal {
 	}
 	
 	public String toString() {
-		return ObjectId + " " + Date + " " + Title + " " + Address + " " + Lat + " " + " " + Long + " " + CurrentPointsAward;
+		return id + " " + ObjectId + " " + Date + " " + Title + " " + Address + " " + Lat + " " + " " + Long + " " + CurrentPointsAward;
 	}
 }

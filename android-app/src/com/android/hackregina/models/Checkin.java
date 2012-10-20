@@ -12,6 +12,6 @@ public class Checkin {
 	}
 	
 	public String toString() {
-		return ObjectId + " " + UserId + " " + Points;
+		return id + " " + ObjectId + " " + UserId + " " + Points;
 	}
 }
