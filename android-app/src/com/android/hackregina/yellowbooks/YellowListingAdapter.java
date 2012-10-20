@@ -10,8 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.android.hackregina.R;
-import com.android.hackregina.R.id;
-import com.android.hackregina.R.layout;
 
 public class YellowListingAdapter extends ArrayAdapter<Listing> {
 
