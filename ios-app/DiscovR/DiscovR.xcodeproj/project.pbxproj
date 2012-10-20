@@ -1,0 +1,496 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		45917AA316331A3100B494E0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45917AA216331A3100B494E0 /* UIKit.framework */; };
+		45917AA516331A3100B494E0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45917AA416331A3100B494E0 /* Foundation.framework */; };
+		45917AA716331A3100B494E0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45917AA616331A3100B494E0 /* CoreGraphics.framework */; };
+		45917AAD16331A3100B494E0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 45917AAB16331A3100B494E0 /* InfoPlist.strings */; };
+		45917AAF16331A3100B494E0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 45917AAE16331A3100B494E0 /* main.m */; };
+		45917AB316331A3100B494E0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 45917AB216331A3100B494E0 /* AppDelegate.m */; };
+		45917AB616331A3100B494E0 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45917AB416331A3100B494E0 /* MainStoryboard_iPhone.storyboard */; };
+		45917AB916331A3100B494E0 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45917AB716331A3100B494E0 /* MainStoryboard_iPad.storyboard */; };
+		45917ABC16331A3100B494E0 /* GoalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45917ABB16331A3100B494E0 /* GoalViewController.m */; };
+		45917ABE16331A3100B494E0 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = 45917ABD16331A3100B494E0 /* first.png */; };
+		45917AC016331A3100B494E0 /* first@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45917ABF16331A3100B494E0 /* first@2x.png */; };
+		45917AC316331A3100B494E0 /* ScoresViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45917AC216331A3100B494E0 /* ScoresViewController.m */; };
+		45917AC516331A3100B494E0 /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = 45917AC416331A3100B494E0 /* second.png */; };
+		45917AC716331A3100B494E0 /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45917AC616331A3100B494E0 /* second@2x.png */; };
+		45917ACF16331A3200B494E0 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45917ACE16331A3200B494E0 /* SenTestingKit.framework */; };
+		45917AD016331A3200B494E0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45917AA216331A3100B494E0 /* UIKit.framework */; };
+		45917AD116331A3200B494E0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45917AA416331A3100B494E0 /* Foundation.framework */; };
+		45917AD916331A3200B494E0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 45917AD716331A3200B494E0 /* InfoPlist.strings */; };
+		45917ADC16331A3200B494E0 /* DiscovRTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 45917ADB16331A3200B494E0 /* DiscovRTests.m */; };
+		45917AEB16332F3D00B494E0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45917AEA16332F3D00B494E0 /* CoreLocation.framework */; };
+		45917AED1633304400B494E0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45917AEC1633304400B494E0 /* MapKit.framework */; };
+		45917B0516333C2C00B494E0 /* AddressAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 45917B0416333C2C00B494E0 /* AddressAnnotation.m */; };
+		45917B0616333C2C00B494E0 /* AddressAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 45917B0416333C2C00B494E0 /* AddressAnnotation.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		45917AD216331A3200B494E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 45917A9516331A3000B494E0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 45917A9D16331A3100B494E0;
+			remoteInfo = DiscovR;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		45917A9E16331A3100B494E0 /* DiscovR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiscovR.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		45917AA216331A3100B494E0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		45917AA416331A3100B494E0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		45917AA616331A3100B494E0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		45917AAA16331A3100B494E0 /* DiscovR-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DiscovR-Info.plist"; sourceTree = "<group>"; };
+		45917AAC16331A3100B494E0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		45917AAE16331A3100B494E0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		45917AB016331A3100B494E0 /* DiscovR-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DiscovR-Prefix.pch"; sourceTree = "<group>"; };
+		45917AB116331A3100B494E0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		45917AB216331A3100B494E0 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		45917AB516331A3100B494E0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		45917AB816331A3100B494E0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		45917ABB16331A3100B494E0 /* GoalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GoalViewController.m; sourceTree = "<group>"; };
+		45917ABD16331A3100B494E0 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first.png; sourceTree = "<group>"; };
+		45917ABF16331A3100B494E0 /* first@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "first@2x.png"; sourceTree = "<group>"; };
+		45917AC116331A3100B494E0 /* ScoresViewController.h */ = {isa = PBXFileReference; path = ScoresViewController.h; sourceTree = "<group>"; };
+		45917AC216331A3100B494E0 /* ScoresViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScoresViewController.m; sourceTree = "<group>"; };
+		45917AC416331A3100B494E0 /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
+		45917AC616331A3100B494E0 /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
+		45917ACD16331A3200B494E0 /* DiscovRTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DiscovRTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		45917ACE16331A3200B494E0 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		45917AD616331A3200B494E0 /* DiscovRTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DiscovRTests-Info.plist"; sourceTree = "<group>"; };
+		45917AD816331A3200B494E0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		45917ADA16331A3200B494E0 /* DiscovRTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DiscovRTests.h; sourceTree = "<group>"; };
+		45917ADB16331A3200B494E0 /* DiscovRTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DiscovRTests.m; sourceTree = "<group>"; };
+		45917AE516331E5100B494E0 /* GoalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoalViewController.h; sourceTree = "<group>"; };
+		45917AEA16332F3D00B494E0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		45917AEC1633304400B494E0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		45917B0316333C2C00B494E0 /* AddressAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressAnnotation.h; sourceTree = "<group>"; };
+		45917B0416333C2C00B494E0 /* AddressAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressAnnotation.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		45917A9B16331A3100B494E0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45917AED1633304400B494E0 /* MapKit.framework in Frameworks */,
+				45917AEB16332F3D00B494E0 /* CoreLocation.framework in Frameworks */,
+				45917AA316331A3100B494E0 /* UIKit.framework in Frameworks */,
+				45917AA516331A3100B494E0 /* Foundation.framework in Frameworks */,
+				45917AA716331A3100B494E0 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		45917AC916331A3200B494E0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45917ACF16331A3200B494E0 /* SenTestingKit.framework in Frameworks */,
+				45917AD016331A3200B494E0 /* UIKit.framework in Frameworks */,
+				45917AD116331A3200B494E0 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		45917A9316331A3000B494E0 = {
+			isa = PBXGroup;
+			children = (
+				45917AA816331A3100B494E0 /* DiscovR */,
+				45917AD416331A3200B494E0 /* DiscovRTests */,
+				45917AA116331A3100B494E0 /* Frameworks */,
+				45917A9F16331A3100B494E0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		45917A9F16331A3100B494E0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				45917A9E16331A3100B494E0 /* DiscovR.app */,
+				45917ACD16331A3200B494E0 /* DiscovRTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		45917AA116331A3100B494E0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				45917AEC1633304400B494E0 /* MapKit.framework */,
+				45917AEA16332F3D00B494E0 /* CoreLocation.framework */,
+				45917AA216331A3100B494E0 /* UIKit.framework */,
+				45917AA416331A3100B494E0 /* Foundation.framework */,
+				45917AA616331A3100B494E0 /* CoreGraphics.framework */,
+				45917ACE16331A3200B494E0 /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		45917AA816331A3100B494E0 /* DiscovR */ = {
+			isa = PBXGroup;
+			children = (
+				45917AB116331A3100B494E0 /* AppDelegate.h */,
+				45917AB216331A3100B494E0 /* AppDelegate.m */,
+				45917AB416331A3100B494E0 /* MainStoryboard_iPhone.storyboard */,
+				45917AB716331A3100B494E0 /* MainStoryboard_iPad.storyboard */,
+				45917AE516331E5100B494E0 /* GoalViewController.h */,
+				45917ABB16331A3100B494E0 /* GoalViewController.m */,
+				45917AC116331A3100B494E0 /* ScoresViewController.h */,
+				45917AC216331A3100B494E0 /* ScoresViewController.m */,
+				45917B0316333C2C00B494E0 /* AddressAnnotation.h */,
+				45917B0416333C2C00B494E0 /* AddressAnnotation.m */,
+				45917AC416331A3100B494E0 /* second.png */,
+				45917AC616331A3100B494E0 /* second@2x.png */,
+				45917ABD16331A3100B494E0 /* first.png */,
+				45917ABF16331A3100B494E0 /* first@2x.png */,
+				45917AA916331A3100B494E0 /* Supporting Files */,
+			);
+			path = DiscovR;
+			sourceTree = "<group>";
+		};
+		45917AA916331A3100B494E0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				45917AAA16331A3100B494E0 /* DiscovR-Info.plist */,
+				45917AAB16331A3100B494E0 /* InfoPlist.strings */,
+				45917AAE16331A3100B494E0 /* main.m */,
+				45917AB016331A3100B494E0 /* DiscovR-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		45917AD416331A3200B494E0 /* DiscovRTests */ = {
+			isa = PBXGroup;
+			children = (
+				45917ADA16331A3200B494E0 /* DiscovRTests.h */,
+				45917ADB16331A3200B494E0 /* DiscovRTests.m */,
+				45917AD516331A3200B494E0 /* Supporting Files */,
+			);
+			path = DiscovRTests;
+			sourceTree = "<group>";
+		};
+		45917AD516331A3200B494E0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				45917AD616331A3200B494E0 /* DiscovRTests-Info.plist */,
+				45917AD716331A3200B494E0 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		45917A9D16331A3100B494E0 /* DiscovR */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 45917ADF16331A3200B494E0 /* Build configuration list for PBXNativeTarget "DiscovR" */;
+			buildPhases = (
+				45917A9A16331A3100B494E0 /* Sources */,
+				45917A9B16331A3100B494E0 /* Frameworks */,
+				45917A9C16331A3100B494E0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DiscovR;
+			productName = DiscovR;
+			productReference = 45917A9E16331A3100B494E0 /* DiscovR.app */;
+			productType = "com.apple.product-type.application";
+		};
+		45917ACC16331A3200B494E0 /* DiscovRTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 45917AE216331A3200B494E0 /* Build configuration list for PBXNativeTarget "DiscovRTests" */;
+			buildPhases = (
+				45917AC816331A3200B494E0 /* Sources */,
+				45917AC916331A3200B494E0 /* Frameworks */,
+				45917ACA16331A3200B494E0 /* Resources */,
+				45917ACB16331A3200B494E0 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				45917AD316331A3200B494E0 /* PBXTargetDependency */,
+			);
+			name = DiscovRTests;
+			productName = DiscovRTests;
+			productReference = 45917ACD16331A3200B494E0 /* DiscovRTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		45917A9516331A3000B494E0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 45917A9816331A3000B494E0 /* Build configuration list for PBXProject "DiscovR" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 45917A9316331A3000B494E0;
+			productRefGroup = 45917A9F16331A3100B494E0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				45917A9D16331A3100B494E0 /* DiscovR */,
+				45917ACC16331A3200B494E0 /* DiscovRTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		45917A9C16331A3100B494E0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45917AAD16331A3100B494E0 /* InfoPlist.strings in Resources */,
+				45917AB616331A3100B494E0 /* MainStoryboard_iPhone.storyboard in Resources */,
+				45917AB916331A3100B494E0 /* MainStoryboard_iPad.storyboard in Resources */,
+				45917ABE16331A3100B494E0 /* first.png in Resources */,
+				45917AC016331A3100B494E0 /* first@2x.png in Resources */,
+				45917AC516331A3100B494E0 /* second.png in Resources */,
+				45917AC716331A3100B494E0 /* second@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		45917ACA16331A3200B494E0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45917AD916331A3200B494E0 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		45917ACB16331A3200B494E0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		45917A9A16331A3100B494E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45917AAF16331A3100B494E0 /* main.m in Sources */,
+				45917AB316331A3100B494E0 /* AppDelegate.m in Sources */,
+				45917ABC16331A3100B494E0 /* GoalViewController.m in Sources */,
+				45917AC316331A3100B494E0 /* ScoresViewController.m in Sources */,
+				45917B0516333C2C00B494E0 /* AddressAnnotation.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		45917AC816331A3200B494E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45917ADC16331A3200B494E0 /* DiscovRTests.m in Sources */,
+				45917B0616333C2C00B494E0 /* AddressAnnotation.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		45917AD316331A3200B494E0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 45917A9D16331A3100B494E0 /* DiscovR */;
+			targetProxy = 45917AD216331A3200B494E0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		45917AAB16331A3100B494E0 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				45917AAC16331A3100B494E0 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		45917AB416331A3100B494E0 /* MainStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				45917AB516331A3100B494E0 /* en */,
+			);
+			name = MainStoryboard_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		45917AB716331A3100B494E0 /* MainStoryboard_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				45917AB816331A3100B494E0 /* en */,
+			);
+			name = MainStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		45917AD716331A3200B494E0 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				45917AD816331A3200B494E0 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		45917ADD16331A3200B494E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		45917ADE16331A3200B494E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		45917AE016331A3200B494E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "DiscovR/DiscovR-Prefix.pch";
+				INFOPLIST_FILE = "DiscovR/DiscovR-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		45917AE116331A3200B494E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "DiscovR/DiscovR-Prefix.pch";
+				INFOPLIST_FILE = "DiscovR/DiscovR-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		45917AE316331A3200B494E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/DiscovR.app/DiscovR";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "DiscovR/DiscovR-Prefix.pch";
+				INFOPLIST_FILE = "DiscovRTests/DiscovRTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		45917AE416331A3200B494E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/DiscovR.app/DiscovR";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "DiscovR/DiscovR-Prefix.pch";
+				INFOPLIST_FILE = "DiscovRTests/DiscovRTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		45917A9816331A3000B494E0 /* Build configuration list for PBXProject "DiscovR" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45917ADD16331A3200B494E0 /* Debug */,
+				45917ADE16331A3200B494E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		45917ADF16331A3200B494E0 /* Build configuration list for PBXNativeTarget "DiscovR" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45917AE016331A3200B494E0 /* Debug */,
+				45917AE116331A3200B494E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		45917AE216331A3200B494E0 /* Build configuration list for PBXNativeTarget "DiscovRTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45917AE316331A3200B494E0 /* Debug */,
+				45917AE416331A3200B494E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 45917A9516331A3000B494E0 /* Project object */;
+}
