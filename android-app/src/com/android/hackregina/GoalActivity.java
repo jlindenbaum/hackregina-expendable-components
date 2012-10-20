@@ -25,11 +25,12 @@ import com.android.hackregina.interfaces.GetGoalTaskCallback;
 import com.android.hackregina.interfaces.YellowTaskCallback;
 import com.android.hackregina.models.Checkin;
 import com.android.hackregina.models.CurrentGoal;
-import com.android.hackregina.models.Listing;
 import com.android.hackregina.tasks.CheckinTask;
 import com.android.hackregina.tasks.GetGoalTask;
 import com.android.hackregina.tasks.YellowTask;
 import com.android.hackregina.utils.Logger;
+import com.android.hackregina.yellowbooks.Listing;
+import com.android.hackregina.yellowbooks.YellowListingAdapter;
 
 public class GoalActivity extends Activity implements NetworkImageTaskInterface, GetGoalTaskCallback, CheckinTaskCallback, YellowTaskCallback {
 

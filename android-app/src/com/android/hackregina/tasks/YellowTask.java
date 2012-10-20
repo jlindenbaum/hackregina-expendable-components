@@ -8,11 +8,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.android.hackregina.Settings;
-import com.android.hackregina.YellowAPI;
-import com.android.hackregina.YellowAPIImpl;
 import com.android.hackregina.interfaces.YellowTaskCallback;
-import com.android.hackregina.models.Listing;
 import com.android.hackregina.utils.Logger;
+import com.android.hackregina.yellowbooks.Listing;
+import com.android.hackregina.yellowbooks.YellowAPI;
+import com.android.hackregina.yellowbooks.YellowAPIImpl;
 
 public class YellowTask extends AsyncTask<Void, Void, ArrayList<Listing>> {
 	private static final String TAG = "### YellowTask";

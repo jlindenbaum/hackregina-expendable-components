@@ -2,7 +2,7 @@ package com.android.hackregina.interfaces;
 
 import java.util.ArrayList;
 
-import com.android.hackregina.models.Listing;
+import com.android.hackregina.yellowbooks.Listing;
 
 
 public interface YellowTaskCallback {
