@@ -107,6 +107,13 @@ public class GoalActivity extends Activity implements NetworkImageTaskCallback, 
 	}
 
 	private void finishedCheckin(Checkin checkin) {
+		if (checkin == null) {
+			AlertDialog alert = new AlertDialog.Builder(this).create();
+			alert.setTitle("Oops!");
+			alert.setMessage("That checkin didn't work, try again later.");
+			alert.show();
+			return;
+		}
 		// set points
 		Button goalButton = (Button) findViewById(R.id.goal_checkinButton);
 		goalButton.setText("ACCOMPLISHED!");

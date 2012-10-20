@@ -71,7 +71,6 @@ public class CheckinTask extends AsyncTask<String, Void, Checkin> {
 	@Override
 	public void onPostExecute(Checkin checkin) {
 		Logger.log(TAG, "Finished checkin");
-		Logger.log(TAG, "checkin: " + checkin.toString());
 		if (this.callback != null) {
 			this.callback.checkinTaskComplete(checkin);
 		}
