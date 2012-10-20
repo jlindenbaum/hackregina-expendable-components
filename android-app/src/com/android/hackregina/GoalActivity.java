@@ -148,6 +148,13 @@ public class GoalActivity extends Activity implements NetworkImageTaskCallback, 
 	}
 
 	private void renderCurrentGoal(CurrentGoal goal) {
+		if (goal == null) {
+			AlertDialog alert = new AlertDialog.Builder(this).create();
+			alert.setTitle("Oops");
+			alert.setMessage("Seems something went wrong. Please try again later.");
+			alert.show();
+			return;
+		}
 		this.objectId = goal.getObjectId();
 		this.latLngStr = goal.getLat() + "," + goal.getLong();
 		this.address = goal.getAddress();
