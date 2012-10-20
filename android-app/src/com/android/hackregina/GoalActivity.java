@@ -1,7 +1,6 @@
 package com.android.hackregina;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.util.ArrayList;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -11,25 +10,28 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.hackregina.interfaces.CheckinTaskCallback;
 import com.android.hackregina.interfaces.GetGoalTaskCallback;
+import com.android.hackregina.interfaces.YellowTaskCallback;
 import com.android.hackregina.models.Checkin;
 import com.android.hackregina.models.CurrentGoal;
+import com.android.hackregina.models.Listing;
 import com.android.hackregina.tasks.CheckinTask;
 import com.android.hackregina.tasks.GetGoalTask;
+import com.android.hackregina.tasks.YellowTask;
 import com.android.hackregina.utils.Logger;
 
-public class GoalActivity extends Activity implements NetworkImageTaskInterface, GetGoalTaskCallback, CheckinTaskCallback {
+public class GoalActivity extends Activity implements NetworkImageTaskInterface, GetGoalTaskCallback, CheckinTaskCallback, YellowTaskCallback {
 
 	public static final String TAG = "### GoalActivity";
 
@@ -39,7 +41,6 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface,
 	private String lon = "";
 	private String address = "";
 	private ProgressDialog progress;
-//	protected GetGoalTask data = new GetGoalTask(new ArrayList<Listing>());
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -104,8 +105,8 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface,
 		String what = "restaurants";
 		String where = String.format("cZ{%s},{%s}", this.lon, this.lat);
 		Logger.log(TAG, Uri.encode(where));
-		new YellowTask(what, Uri.encode(where)).execute();
-		
+		new YellowTask(this, what, Uri.encode(where)).execute();
+
 		this.hideLoadingSpinner();
 		AlertDialog alert = new AlertDialog.Builder(this).create();
 		alert.setTitle("Dora The Explorer!");
@@ -113,20 +114,20 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface,
 		alert.show();
 	}
 
-	private void finishYellowTask() {
-//		YellowListingAdapter adapter = new YellowListingAdapter(getApplicationContext(), R.layout.listing_item, data.merchants);
-//		ListView listView = (ListView) findViewById(R.id.goal_yellowList);
-//		listView.setAdapter(adapter);
-//		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//			@Override
-//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//				TextView address = (TextView) arg1.findViewById(R.id.businessAddress);
-//				String mapUri = "http://maps.google.com/maps?q=" + address.getText();
-//				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapUri));
-//				startActivity(intent);
-//			}
-//		});
+	private void finishYellowTask(ArrayList<Listing> listingData) {
+		YellowListingAdapter adapter = new YellowListingAdapter(getApplicationContext(), R.layout.listing_item, listingData);
+		ListView listView = (ListView) findViewById(R.id.goal_yellowList);
+		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				TextView address = (TextView) arg1.findViewById(R.id.businessAddress);
+				String mapUri = "http://maps.google.com/maps?q=" + address.getText();
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapUri));
+				startActivity(intent);
+			}
+		});
 	}
 
 	private String getGoogleAccount() {
@@ -179,46 +180,6 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface,
 		});
 	}
 
-
-
-	class YellowTask extends AsyncTask<Void, Void, Void> {
-		
-		private String what;
-		private String where;
-		
-		public YellowTask(String what, String where) {
-			this.what = what;
-			this.where = where;
-		}
-		
-		@Override
-		protected Void doInBackground(Void... voids) {
-			try {
-				YellowAPI api = new YellowAPIImpl("en", Settings.YellowAPIKey, "discovr", true);
-				JSONObject response = api.findBusiness(this.what, this.where, 1, 40, 0);
-				Logger.log(TAG, response.toString());
-				// Make sure the response contains results
-				if (response.isNull("listings") == false) {
-					JSONArray listings = response.getJSONArray("listings");
-
-//					for (int i = 0; i < listings.length(); ++i) {
-//						data.merchants.add(new Listing(listings.getJSONObject(i)));
-//						Logger.log(TAG, data.merchants.get(i).toString());
-//					}
-				}
-			} catch (Exception e) {
-				Log.e("MerchantFeedError", "Error loading JSON", e);
-			}
-
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(Void nothing) {
-			finishYellowTask();
-		}
-	}
-
 	@Override
 	public void goalUpdateTaskComplete(CurrentGoal goal) {
 		refreshCurrentGoalComplete(goal);
@@ -229,5 +190,9 @@ public class GoalActivity extends Activity implements NetworkImageTaskInterface,
 		finishedCheckin(checkin);
 	}
 
+	@Override
+	public void yellowTaskComplete(ArrayList<Listing> listingData) {
+		finishYellowTask(listingData);
+	}
 
 }
