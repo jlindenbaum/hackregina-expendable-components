@@ -1,4 +1,4 @@
-package com.android.hackregina;
+package com.android.hackregina.adapters;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.android.hackregina.R;
 import com.android.hackregina.models.LeaderPerson;
 import com.android.hackregina.utils.Logger;
 

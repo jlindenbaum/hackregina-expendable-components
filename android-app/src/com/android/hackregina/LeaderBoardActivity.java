@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.android.hackregina.adapters.LeaderBoardAdapter;
 import com.android.hackregina.models.LeaderPerson;
 import com.android.hackregina.utils.Logger;
 import com.google.gson.Gson;
