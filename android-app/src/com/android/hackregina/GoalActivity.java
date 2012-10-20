@@ -2,8 +2,6 @@ package com.android.hackregina;
 
 import java.util.ArrayList;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -31,6 +29,7 @@ import com.android.hackregina.tasks.GetGoalTask;
 import com.android.hackregina.tasks.NetworkImageTask;
 import com.android.hackregina.tasks.YellowTask;
 import com.android.hackregina.utils.Logger;
+import com.android.hackregina.utils.SharedPreferencesUtil;
 import com.android.hackregina.yellowbooks.Listing;
 import com.android.hackregina.yellowbooks.YellowListingAdapter;
 
@@ -43,16 +42,32 @@ public class GoalActivity extends Activity implements NetworkImageTaskCallback, 
 	private String lat = "";
 	private String lon = "";
 	private String address = "";
+	private String userId;
 	private ProgressDialog progress;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_goal);
+	}
 
-		Logger.log(TAG, "Starting...");
-		showLoadingSpinner();
-		new GetGoalTask(this).execute(new String[] { Settings.URL_CURRENT_GOAL });
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		// get user id from shared pref
+		this.userId = (String) SharedPreferencesUtil.readSharedPreference(getApplicationContext(), SharedPreferencesUtil.KEY_USER_ID);
+
+		if (this.userId == null) {
+			// start user id activity
+			Intent intent = new Intent("com.android.hackregina.EnterUserIdActivity");
+			startActivity(intent);
+		} else {
+			Logger.log(TAG, "Starting...");
+			// get the current goal task
+			showLoadingSpinner();
+			new GetGoalTask(this).execute(new String[] { Settings.URL_CURRENT_GOAL });
+		}
 	}
 
 	@Override
@@ -86,7 +101,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskCallback, 
 	}
 
 	public void completeCheckin(View v) {
-		String checkinJSON = "{\"ObjectId\":" + this.objectId + ", \"UserId\":\"" + this.getGoogleAccount() + "\"}";
+		String checkinJSON = "{\"ObjectId\":" + this.objectId + ", \"UserId\":\"" + this.userId + "\"}";
 		this.showLoadingSpinner();
 		new CheckinTask(this).execute(new String[] { checkinJSON });
 	}
@@ -132,20 +147,20 @@ public class GoalActivity extends Activity implements NetworkImageTaskCallback, 
 			}
 		});
 	}
-
-	private String getGoogleAccount() {
-		AccountManager manager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
-		Account[] list = manager.getAccounts();
-		String gmail = null;
-
-		for (Account account : list) {
-			if (account.type.equalsIgnoreCase("com.google")) {
-				return account.name;
-			}
-		}
-
-		return gmail;
-	}
+//
+//	private String getGoogleAccount() {
+//		AccountManager manager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
+//		Account[] list = manager.getAccounts();
+//		String gmail = null;
+//
+//		for (Account account : list) {
+//			if (account.type.equalsIgnoreCase("com.google")) {
+//				return account.name;
+//			}
+//		}
+//
+//		return gmail;
+//	}
 
 	private void renderCurrentGoal(CurrentGoal goal) {
 		if (goal == null) {

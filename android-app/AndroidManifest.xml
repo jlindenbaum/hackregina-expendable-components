@@ -41,6 +41,15 @@
                 <action android:name="com.android.hackregina.LeaderBoardActivity" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".EnterUserIdActivity"
+            android:exported="false" >
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="com.android.hackregina.EnterUserIdActivity" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
