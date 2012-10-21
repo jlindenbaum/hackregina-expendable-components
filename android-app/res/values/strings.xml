@@ -6,5 +6,10 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_refresh">Refresh</string>
     <string name="title_activity_main">DiscovR</string>
+    <string name="todaysGoal_caps">TODAY\'S GOAL</string>
+    <string name="map_caps">MAP</string>
+    <string name="checkout_caps">CHECKOUT WHAT\'S AROUND</string>
+    <string name="checkoutYelp">Checkout Yelp</string>
+    <string name="checkoutYellow">Checkout YellowPages</string>
 
 </resources>

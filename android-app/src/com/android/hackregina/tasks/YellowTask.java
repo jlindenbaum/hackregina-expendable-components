@@ -31,7 +31,7 @@ public class YellowTask extends AsyncTask<Void, Void, ArrayList<Listing>> {
 	protected ArrayList<Listing> doInBackground(Void... voids) {
 		ArrayList<Listing> listingData = new ArrayList<Listing>();
 		try {
-			YellowAPI api = new YellowAPIImpl("en", Settings.YellowAPIKey, "discovr", true);
+			YellowAPI api = new YellowAPIImpl("en", Settings.YellowAPIKey, Settings.YellowAPIAppName, true);
 			JSONObject response = api.findBusiness(this.what, this.where, 1, 40, 0);
 			Logger.log(TAG, response.toString());
 			// Make sure the response contains results

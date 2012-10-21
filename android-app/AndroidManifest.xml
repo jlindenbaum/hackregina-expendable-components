@@ -50,6 +50,15 @@
                 <action android:name="com.android.hackregina.EnterUserIdActivity" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".YelpActivity"
+            android:exported="false" >
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="com.android.hackregina.YelpActivity" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

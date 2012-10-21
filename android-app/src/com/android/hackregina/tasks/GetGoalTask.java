@@ -31,9 +31,11 @@ public class GetGoalTask extends AsyncTask<String, Void, CurrentGoal> {
 	protected CurrentGoal doInBackground(String... urls) {
 
 		for (String url : urls) {
+			Logger.log(TAG, "Loading: " + url);
 			DefaultHttpClient client = new DefaultHttpClient();
 			HttpGet httpGet = new HttpGet(url);
 			httpGet.setHeader("X-ZUMO-APPLICATION", Settings.X_ZUMO_KEY);
+			httpGet.setHeader("Accept", "application/json");
 
 			try {
 				// read response into string
@@ -55,6 +57,7 @@ public class GetGoalTask extends AsyncTask<String, Void, CurrentGoal> {
 
 				// parse json
 				Gson gson = new Gson();
+				Logger.log(TAG, "Response: " + sb.toString());
 				CurrentGoal[] goals = gson.fromJson(sb.toString(), CurrentGoal[].class);
 				Logger.log(TAG, goals[0].toString());
 				return goals[0];

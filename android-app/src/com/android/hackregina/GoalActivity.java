@@ -11,11 +11,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.hackregina.interfaces.CheckinTaskCallback;
@@ -31,7 +29,6 @@ import com.android.hackregina.tasks.YellowTask;
 import com.android.hackregina.utils.Logger;
 import com.android.hackregina.utils.SharedPreferencesUtil;
 import com.android.hackregina.yellowbooks.Listing;
-import com.android.hackregina.yellowbooks.YellowListingAdapter;
 
 public class GoalActivity extends Activity implements NetworkImageTaskCallback, GetGoalTaskCallback, CheckinTaskCallback, YellowTaskCallback {
 
@@ -94,6 +91,13 @@ public class GoalActivity extends Activity implements NetworkImageTaskCallback, 
 		this.hideLoadingSpinner();
 	}
 
+	public void startYelpActivity(View v) {
+		Intent intent = new Intent("com.android.hackregina.YelpActivity");
+		intent.putExtra("lat", this.lat);
+		intent.putExtra("lng", this.lon);
+		startActivity(intent);
+	}
+	
 	public void completeYelpIntent(View v) {
 		String yelpURI = "http://www.yelp.com/search?find_desc=restaurant&find_loc=" + this.address + ", regina";
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(yelpURI));
@@ -139,34 +143,20 @@ public class GoalActivity extends Activity implements NetworkImageTaskCallback, 
 		alert.show();
 	}
 
-	private void finishYellowTask(ArrayList<Listing> listingData) {
-		YellowListingAdapter adapter = new YellowListingAdapter(getApplicationContext(), R.layout.listing_item, listingData);
-		ListView listView = (ListView) findViewById(R.id.goal_yellowList);
-		listView.setAdapter(adapter);
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				TextView address = (TextView) arg1.findViewById(R.id.businessAddress);
-				String mapUri = "http://maps.google.com/maps?q=" + address.getText();
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapUri));
-				startActivity(intent);
-			}
-		});
-	}
+//	private void finishYellowTask(ArrayList<Listing> listingData) {
+//		YellowListingAdapter adapter = new YellowListingAdapter(getApplicationContext(), R.layout.listing_item, listingData);
+//		ListView listView = (ListView) findViewById(R.id.goal_yellowList);
+//		listView.setAdapter(adapter);
+//		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //
-//	private String getGoogleAccount() {
-//		AccountManager manager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
-//		Account[] list = manager.getAccounts();
-//		String gmail = null;
-//
-//		for (Account account : list) {
-//			if (account.type.equalsIgnoreCase("com.google")) {
-//				return account.name;
+//			@Override
+//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+//				TextView address = (TextView) arg1.findViewById(R.id.businessAddress);
+//				String mapUri = "http://maps.google.com/maps?q=" + address.getText();
+//				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapUri));
+//				startActivity(intent);
 //			}
-//		}
-//
-//		return gmail;
+//		});
 //	}
 
 	private void renderCurrentGoal(CurrentGoal goal) {
@@ -224,7 +214,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskCallback, 
 
 	@Override
 	public void yellowTaskComplete(ArrayList<Listing> listingData) {
-		finishYellowTask(listingData);
+		//finishYellowTask(listingData);
 	}
 
 }
