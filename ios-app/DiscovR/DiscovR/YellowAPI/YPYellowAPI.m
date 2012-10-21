@@ -1,0 +1,184 @@
+/*
+ Copyright � 2011, Yellow Pages Group Co.  All rights reserved.
+ Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ 
+ 1)	Redistributions of source code must retain a complete copy of this notice, including the copyright notice, this list of conditions and the following disclaimer; and
+ 2)	Neither the name of the Yellow Pages Group Co., nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+ 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT OWNER AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#import "SBJSON.h"
+#import "YPYellowAPI.h"
+#import "NSString+YP.h"
+
+@interface YPYellowAPI ()
+- (void)performSearch:(NSString *)what where:(NSString *)where callback:(YPFindBusinessCallback)callback;
+@end
+
+#pragma mark - Constants
+
+NSString * const YPYellowAPIErrorDomain = @"com.yellowapi";
+
+NSString * const YPYellowAPIUrl = @"http://api.yellowapi.com/";
+NSString * const YPYellowAPISandboxUrl = @"http://api.sandbox.yellowapi.com/";
+
+NSString * const YPYellowAPIFindBusiness = @"FindBusiness/";
+NSString * const YPYellowAPIGetBusinessDetails = @"GetBusinessDetails/";
+
+#pragma mark - YPYellowAPI Implementation
+
+@implementation YPYellowAPI
+
+#pragma mark - Properties
+
+@synthesize uid, apiKey;
+
+#pragma mark - Initialization
+
+- (id)initWithAPIKey:(NSString *)_apiKey
+{
+	return [self initWithAPIKey:_apiKey sandbox:NO];
+}
+
+- (id)initWithAPIKey:(NSString *)_apiKey sandbox:(BOOL)sandbox
+{
+    self = [super init];
+	if (self) {
+		// set the api url
+		url = sandbox ? [YPYellowAPISandboxUrl copy] : [YPYellowAPIUrl copy];
+		
+		// set the device uid and the YellowAPI key
+		uid = [[UIDevice currentDevice].uniqueIdentifier copy];
+        apiKey = [_apiKey copy];
+	}
+	return self;
+}
+
+#pragma mark - Memory Management
+
+- (void)dealloc
+{
+	[uid release];
+    [apiKey release];
+	[url release];
+    [super dealloc];
+}
+
+#pragma mark - YellowAPI Calls
+
+- (void)findBusiness:(NSString *)what atCoordinate:(CLLocationCoordinate2D)coord callback:(YPFindBusinessCallback)callback
+{
+	NSString *where = [NSString stringWithFormat:@"cZ%f,%f", coord.longitude, coord.latitude];
+	[self performSearch:what where:where callback:callback];
+}
+
+- (void)findBusiness:(NSString *)what locatedIn:(NSString *)where callback:(YPFindBusinessCallback)callback 
+{
+	[self performSearch:(NSString *)what where:(NSString *)[where stringWithYPEncoding] callback:(YPFindBusinessCallback)callback];
+}
+
+- (void)performSearch:(NSString *)what where:(NSString *)where callback:(YPFindBusinessCallback)callback 
+{
+	NSString *findBusinessString = [NSString stringWithFormat:@"%@%@?apikey=%@&UID=%@&fmt=JSON&what=%@&where=%@",
+									url,
+									YPYellowAPIFindBusiness,
+									apiKey,
+									uid,
+									[what stringWithYPEncoding],
+									where];
+	NSLog(@"%@", findBusinessString);
+	// make the request to the api
+	NSURL *findBusinessUrl = [NSURL URLWithString:findBusinessString];
+	NSURLRequest *urlRequest = [NSURLRequest requestWithURL:findBusinessUrl cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:30.0];
+	
+	// run network calls asynchonously
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+		NSError *error = nil;
+		NSHTTPURLResponse *response = nil;
+		NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
+		YPListingSummary *listingSummary = nil;
+		
+		if (!error) {
+			// the request is only successful if the return code is 200
+			if (response.statusCode == 200) {
+				// initialize the parser
+				SBJsonParser *json = [SBJsonParser new];
+				
+				// parse the response
+				NSDictionary *data = [json objectWithData:urlData];
+				
+				listingSummary = [[[YPListingSummary alloc] initWithDictionary:data] autorelease];
+				
+				// release the parser
+				[json release];
+			}
+			else {
+				// create an error for the application to deal with
+				NSString *reason = [[[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding] autorelease];
+				NSDictionary *userInfo = [NSDictionary dictionaryWithObject:reason forKey:NSLocalizedDescriptionKey];
+				error = [NSError errorWithDomain:YPYellowAPIErrorDomain code:response.statusCode userInfo:userInfo];
+			}
+		}
+		
+		// run the callback on the main (ui) thread
+		dispatch_async(dispatch_get_main_queue(), ^(void) {
+			callback(listingSummary, error);
+		});
+	});
+}
+
+- (void)getBusinessDetails:(NSString *)identifier prov:(NSString *)prov name:(NSString *)name city:(NSString *)city callback:(YPBusinessDetailsCallback)callback
+{
+    if ([prov length] == 0) prov = @"Canada";
+    
+	NSString *getBusinessDetailsString = [NSString stringWithFormat:@"%@%@?apikey=%@&UID=%@&fmt=JSON&prov=%@&bus-name=%@&listingId=%@&city=%@",
+										  url,
+										  YPYellowAPIGetBusinessDetails,
+										  apiKey,
+										  uid,
+                                          [prov stringWithYPEncoding],
+										  [name stringWithYPEncoding],
+										  identifier,
+                                          [city stringWithYPEncoding]];
+	// make the request to the api
+	NSURL *getBusinessDetailsUrl = [NSURL URLWithString:getBusinessDetailsString];
+	NSURLRequest *urlRequest = [NSURLRequest requestWithURL:getBusinessDetailsUrl cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:30.0];
+    
+	// run the network call asynchonously
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+		NSError *error = nil;
+		NSHTTPURLResponse *response = nil;
+		NSData *urlData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
+		YPListing *listing = nil;
+		
+		if (!error) {
+			// success only if the return code is 200
+			if (response.statusCode == 200) {
+				// initialize the parser
+				SBJsonParser *json = [SBJsonParser new];
+				
+				// parse the response
+				NSDictionary *data = [json objectWithData:urlData];
+				
+				listing = [[[YPListing alloc] initWithDictionary:data] autorelease];
+				
+				// release the parser
+				[json release];
+			}
+			else {
+				// create an error for the application to deal with
+				NSString *reason = [[[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding] autorelease];
+				NSDictionary *userInfo = [NSDictionary dictionaryWithObject:reason forKey:NSLocalizedDescriptionKey];
+				error = [NSError errorWithDomain:YPYellowAPIErrorDomain code:response.statusCode userInfo:userInfo];
+			}
+		}
+		
+		// run the callback on the ui thread
+		dispatch_async(dispatch_get_main_queue(), ^(void) {
+			callback(listing, error);
+		});
+	});
+}
+
+@end

@@ -42,15 +42,18 @@
 	
 	NSData *currentGoal = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];	
 	NSError *e = nil;
-	scores = [NSJSONSerialization JSONObjectWithData:currentGoal options: NSJSONReadingMutableLeaves error: &e];
-	
-	for(NSDictionary *item in scores) {
-		NSLog(@"Item: %@", item);
+	scores = [[NSArray alloc] initWithArray:[NSJSONSerialization JSONObjectWithData:currentGoal options: NSJSONReadingMutableLeaves error: &e]];
+	for(NSDictionary *item in scores)
+	{
+		NSLog(@"item %@", item);
 	}
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [scores count];
+	if(scores)
+		return [scores count];
+	else
+		return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -71,14 +74,12 @@
 	[scoreLabel setBackgroundColor:[UIColor clearColor]];
 	[cell addSubview:scoreLabel];
 	
-	
 	NSString *username = [[scores objectAtIndex:indexPath.row] valueForKey:@"UserId"];
 	int userCheckins, userPoints;
 	if([[scores objectAtIndex:indexPath.row] valueForKey:@"Points"] != [NSNull null])
 		userPoints = [[[scores objectAtIndex:indexPath.row] valueForKey:@"Points"] intValue];
 	else
 		userPoints = 0;
-	NSLog(@"%@", [[scores objectAtIndex:indexPath.row] valueForKey:@"TotalCheckins"]);
 	if([[scores objectAtIndex:indexPath.row] valueForKey:@"TotalCheckins"] != [NSNull null])
 		userCheckins = [[[scores objectAtIndex:indexPath.row] valueForKey:@"TotalCheckins"] intValue];
 	else

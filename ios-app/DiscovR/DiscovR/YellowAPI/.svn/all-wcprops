@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/repos/yellowsdk/!svn/ver/131/iOS/YellowAPI/YellowAPI
+END
+NSDictionary+YP.h
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/yellowsdk/!svn/ver/125/iOS/YellowAPI/YellowAPI/NSDictionary+YP.h
+END
+NSString+YP.h
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repos/yellowsdk/!svn/ver/125/iOS/YellowAPI/YellowAPI/NSString+YP.h
+END
+YPAddress.h
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/repos/yellowsdk/!svn/ver/125/iOS/YellowAPI/YellowAPI/YPAddress.h
+END
+NSDictionary+YP.m
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/repos/yellowsdk/!svn/ver/125/iOS/YellowAPI/YellowAPI/NSDictionary+YP.m
+END
+YPListingSummary.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/yellowsdk/!svn/ver/125/iOS/YellowAPI/YellowAPI/YPListingSummary.h
+END
+NSString+YP.m
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repos/yellowsdk/!svn/ver/125/iOS/YellowAPI/YellowAPI/NSString+YP.m
+END
+YPAddress.m
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/repos/yellowsdk/!svn/ver/125/iOS/YellowAPI/YellowAPI/YPAddress.m
+END
+YPListingSummary.m
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/repos/yellowsdk/!svn/ver/125/iOS/YellowAPI/YellowAPI/YPListingSummary.m
+END
+YPYellowAPI.h
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repos/yellowsdk/!svn/ver/131/iOS/YellowAPI/YellowAPI/YPYellowAPI.h
+END
+YPPhone.h
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/repos/yellowsdk/!svn/ver/125/iOS/YellowAPI/YellowAPI/YPPhone.h
+END
+YPListing.h
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/repos/yellowsdk/!svn/ver/125/iOS/YellowAPI/YellowAPI/YPListing.h
+END
+YellowAPI-Prefix.pch
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/yellowsdk/!svn/ver/125/iOS/YellowAPI/YellowAPI/YellowAPI-Prefix.pch
+END
+YPYellowAPI.m
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/repos/yellowsdk/!svn/ver/131/iOS/YellowAPI/YellowAPI/YPYellowAPI.m
+END
+YPPhone.m
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/repos/yellowsdk/!svn/ver/125/iOS/YellowAPI/YellowAPI/YPPhone.m
+END
+YPListing.m
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/repos/yellowsdk/!svn/ver/125/iOS/YellowAPI/YellowAPI/YPListing.m
+END
