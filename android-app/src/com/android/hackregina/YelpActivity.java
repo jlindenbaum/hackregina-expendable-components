@@ -4,8 +4,13 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.hackregina.adapters.YelpListingAdapter;
 import com.android.hackregina.interfaces.YelpTaskCallback;
@@ -22,7 +27,7 @@ public class YelpActivity extends Activity implements YelpTaskCallback {
 	public void onCreate(Bundle savedInstance) {
 		super.onCreate(savedInstance);
 		setContentView(R.layout.activity_yelp_listing);
-		
+
 		this.progress = new ProgressDialog(this);
 		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		progress.setCancelable(false);
@@ -42,14 +47,23 @@ public class YelpActivity extends Activity implements YelpTaskCallback {
 	}
 
 	@Override
-	public void yelpTaskComplete(ArrayList<YelpListing> listingData) {
+	public void yelpTaskComplete(final ArrayList<YelpListing> listingData) {
 		Logger.log(TAG, "" + listingData);
 
 		if (listingData != null && listingData.size() > 0) {
 			ListView yelpListView = (ListView) findViewById(R.id.yelp_listView);
 			yelpListView.setAdapter(new YelpListingAdapter(this, R.layout.yelp_item, listingData));
+			yelpListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					String mapUri = listingData.get(arg2).getMobileUrl();
+					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapUri));
+					startActivity(intent);
+				}
+			});
 		}
-		
+
 		this.progress.dismiss();
 	}
 }
