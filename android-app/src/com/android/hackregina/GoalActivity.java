@@ -1,7 +1,5 @@
 package com.android.hackregina;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -13,24 +11,20 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.hackregina.interfaces.CheckinTaskCallback;
 import com.android.hackregina.interfaces.GetGoalTaskCallback;
 import com.android.hackregina.interfaces.NetworkImageTaskCallback;
-import com.android.hackregina.interfaces.YellowTaskCallback;
 import com.android.hackregina.models.Checkin;
 import com.android.hackregina.models.CurrentGoal;
 import com.android.hackregina.tasks.CheckinTask;
 import com.android.hackregina.tasks.GetGoalTask;
 import com.android.hackregina.tasks.NetworkImageTask;
-import com.android.hackregina.tasks.YellowTask;
 import com.android.hackregina.utils.Logger;
 import com.android.hackregina.utils.SharedPreferencesUtil;
-import com.android.hackregina.yellowbooks.Listing;
 
-public class GoalActivity extends Activity implements NetworkImageTaskCallback, GetGoalTaskCallback, CheckinTaskCallback, YellowTaskCallback {
+public class GoalActivity extends Activity implements NetworkImageTaskCallback, GetGoalTaskCallback, CheckinTaskCallback {
 
 	public static final String TAG = "### GoalActivity";
 
@@ -38,7 +32,6 @@ public class GoalActivity extends Activity implements NetworkImageTaskCallback, 
 	private String latLngStr = "";
 	private String lat = "";
 	private String lon = "";
-	private String address = "";
 	private String userId;
 	private ProgressDialog progress;
 
@@ -51,7 +44,7 @@ public class GoalActivity extends Activity implements NetworkImageTaskCallback, 
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		// get user id from shared pref
 		this.userId = (String) SharedPreferencesUtil.readSharedPreference(getApplicationContext(), SharedPreferencesUtil.KEY_USER_ID);
 
@@ -97,10 +90,11 @@ public class GoalActivity extends Activity implements NetworkImageTaskCallback, 
 		intent.putExtra("lng", this.lon);
 		startActivity(intent);
 	}
-	
-	public void completeYelpIntent(View v) {
-		String yelpURI = "http://www.yelp.com/search?find_desc=restaurant&find_loc=" + this.address + ", regina";
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(yelpURI));
+
+	public void startYellowActivity(View v) {
+		Intent intent = new Intent("com.android.hackregina.YellowActivity");
+		intent.putExtra("lat", this.lat);
+		intent.putExtra("lng", this.lon);
 		startActivity(intent);
 	}
 
@@ -118,23 +112,12 @@ public class GoalActivity extends Activity implements NetworkImageTaskCallback, 
 			alert.show();
 			return;
 		}
+
 		// set points
 		Button goalButton = (Button) findViewById(R.id.goal_checkinButton);
 		goalButton.setText("ACCOMPLISHED!");
 		goalButton.setOnClickListener(null);
 		goalButton.setActivated(false);
-
-		// show checkout
-		LinearLayout checkout = (LinearLayout) findViewById(R.id.goal_checkoutLayout);
-		checkout.setVisibility(View.VISIBLE);
-		LinearLayout mapLayout = (LinearLayout) findViewById(R.id.goal_mapLayout);
-		mapLayout.setVisibility(View.GONE);
-
-		// start yellow api requests
-		String what = "restaurants";
-		String where = String.format("cZ{%s},{%s}", this.lon, this.lat);
-		Logger.log(TAG, Uri.encode(where));
-		new YellowTask(this, what, Uri.encode(where)).execute();
 
 		this.hideLoadingSpinner();
 		AlertDialog alert = new AlertDialog.Builder(this).create();
@@ -142,22 +125,6 @@ public class GoalActivity extends Activity implements NetworkImageTaskCallback, 
 		alert.setMessage("You've checked in. That's awesome. Checkout what's around!");
 		alert.show();
 	}
-
-//	private void finishYellowTask(ArrayList<Listing> listingData) {
-//		YellowListingAdapter adapter = new YellowListingAdapter(getApplicationContext(), R.layout.listing_item, listingData);
-//		ListView listView = (ListView) findViewById(R.id.goal_yellowList);
-//		listView.setAdapter(adapter);
-//		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//			@Override
-//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//				TextView address = (TextView) arg1.findViewById(R.id.businessAddress);
-//				String mapUri = "http://maps.google.com/maps?q=" + address.getText();
-//				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapUri));
-//				startActivity(intent);
-//			}
-//		});
-//	}
 
 	private void renderCurrentGoal(CurrentGoal goal) {
 		if (goal == null) {
@@ -169,7 +136,6 @@ public class GoalActivity extends Activity implements NetworkImageTaskCallback, 
 		}
 		this.objectId = goal.getObjectId();
 		this.latLngStr = goal.getLat() + "," + goal.getLong();
-		this.address = goal.getAddress();
 		this.lat = goal.getLat();
 		this.lon = goal.getLong();
 		// goal name
@@ -210,11 +176,6 @@ public class GoalActivity extends Activity implements NetworkImageTaskCallback, 
 	@Override
 	public void checkinTaskComplete(Checkin checkin) {
 		finishedCheckin(checkin);
-	}
-
-	@Override
-	public void yellowTaskComplete(ArrayList<Listing> listingData) {
-		//finishYellowTask(listingData);
 	}
 
 }
